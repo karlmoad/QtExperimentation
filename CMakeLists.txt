@@ -1,0 +1,15 @@
+cmake_minimum_required(VERSION 3.9)
+project(QtExperimentation)
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
+
+find_package(Qt5 COMPONENTS Core Widgets Sql REQUIRED)
+
+add_executable(QtExperimentation main.cpp classes/KeyedObject.h classes/Utilities.h classes/Person.cpp classes/Person.h classes/Gender.h)
+
+target_link_libraries(QtExperimentation Qt5::Core Qt5::Widgets Qt5::Sql)
