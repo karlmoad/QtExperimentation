@@ -47,6 +47,10 @@ int main() {
               << " SEX: " << (p3->getGender() == Gender::FEMALE ? "Female" : "Male")
               << std::endl;
 
+    std::cout << "____END OF LINE____";
+
+
+
     delete p1;
     delete p2;
     delete p3;
