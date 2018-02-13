@@ -6,7 +6,9 @@
 
 Person::Person():KeyedObject(){};
 
-Person::~Person()=default;
+Person::~Person(){
+    qDebug() << "Person : " << this->getKey() << "deleted";
+};
 
 Person::Person(const Person &toCopy) : KeyedObject(toCopy) {
     this->m_Name = toCopy.m_Name;

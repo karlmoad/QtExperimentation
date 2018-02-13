@@ -7,6 +7,7 @@
 
 #include <QJsonObject>
 #include <QString>
+#include <QDebug>
 #include "classes/KeyedObject.h"
 #include "classes/Gender.h"
 
