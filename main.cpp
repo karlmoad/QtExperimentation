@@ -7,6 +7,8 @@
 #include "classes/Car.h"
 #include "classes/House.h"
 #include "classes/Association.h"
+#include "classes/Utilities.h"
+#include "classes/KeyedObject.h"
 #include <QSharedPointer>
 #include <QJsonObject>
 #include <QJsonDocument>
@@ -157,6 +159,69 @@ int main() {
               " Person: Key: " << AP2C1->getAssociationOrigin()->getKey().toStdString() << " Name: " << AP2C1->getAssociationOrigin()->getName().toStdString() <<
               " Car: Key:" << AP2C1->getAssocationTarget()->getKey().toStdString() << " VIN: " << AP2C1->getAssocationTarget()->getVin().toStdString() << std::endl;
 
+
+    //Cast a person and car to keyed object and store in an association
+
+    QSharedPointer<KeyedObject> koFrom = static_cast<QSharedPointer<KeyedObject>>(p3);
+    QSharedPointer<KeyedObject> koTo = static_cast<QSharedPointer<KeyedObject>>(c);
+
+    auto assoc2 = QSharedPointer<Association<QSharedPointer<KeyedObject>, QSharedPointer<KeyedObject>>>(Association<QSharedPointer<KeyedObject>, QSharedPointer<KeyedObject>>::Builder().setType(AssociationType::Person2Car)->setAssociationOrigin(koFrom)->setAssociationTarget(koTo)->build());
+
+    std::cout << "Test KeyedObject Association 2: Person to Car " <<
+              " Key: " << assoc2->getKey().toStdString() <<
+              " Person: Key: " << assoc2->getAssociationOrigin()->getKey().toStdString() <<
+              " Car: Key:" << assoc2->getAssocationTarget()->getKey().toStdString()  << std::endl;
+
+    //Test Factory method
+
+    auto assoc3 = QSharedPointer<Association<QSharedPointer<KeyedObject>, QSharedPointer<KeyedObject>>>(
+            AssociationFactory::CreateAndCast< QSharedPointer<KeyedObject>, QSharedPointer<KeyedObject> , QSharedPointer<Person>, QSharedPointer<Car>>(p2,c, AssociationType::Person2Car));
+
+
+    std::cout << "Test KeyedObject Association 3: Person to Car " <<
+              " Key: " << assoc3->getKey().toStdString() <<
+              " Person: Key: " << assoc3->getAssociationOrigin()->getKey().toStdString() <<
+              " Car: Key:" << assoc3->getAssocationTarget()->getKey().toStdString()  << std::endl;
+
+
+    //Now make a list to hold various associations i.e. Person -> Car, Car -> House, Person -> House ...etc. all inherit from KeyedObject
+    QList<QSharedPointer<Association<QSharedPointer<KeyedObject>, QSharedPointer<KeyedObject>>>> associations;
+    associations.append(assoc2);
+    associations.append(assoc3);
+
+    //Add more Associations or various relations
+
+    auto h1 = homes.at(0);
+    auto h2 = homes.at(1);
+    auto h3 = homes.at(2);
+
+    for(int i = 0; i < cars.size() ; i++){
+        int part = i % 3;
+        QSharedPointer<Car> item = cars.at(i);
+        
+        switch(part){
+            case 1:
+                associations.append(QSharedPointer<Association<QSharedPointer<KeyedObject>, QSharedPointer<KeyedObject>>>(
+                        AssociationFactory::CreateAndCast< QSharedPointer<KeyedObject>, QSharedPointer<KeyedObject> , QSharedPointer<House>, QSharedPointer<Car>>(h1,item, AssociationType::House2Car)));
+                break;
+            case 2:
+                associations.append(QSharedPointer<Association<QSharedPointer<KeyedObject>, QSharedPointer<KeyedObject>>>(
+                        AssociationFactory::CreateAndCast< QSharedPointer<KeyedObject>, QSharedPointer<KeyedObject> , QSharedPointer<House>, QSharedPointer<Car>>(h2,item, AssociationType::House2Car)));
+                break;
+            default:
+                associations.append(QSharedPointer<Association<QSharedPointer<KeyedObject>, QSharedPointer<KeyedObject>>>(
+                        AssociationFactory::CreateAndCast< QSharedPointer<KeyedObject>, QSharedPointer<KeyedObject> , QSharedPointer<House>, QSharedPointer<Car>>(h3,item, AssociationType::House2Car)));
+                break;
+        }
+    }
+
+    for(int i = 0; i < associations.size(); i++){
+        std::cout << "Associations Object " << i <<
+                  " Type: " << (int)associations.at(i)->getType() <<
+                  " Key: " << associations.at(i)->getKey().toStdString() <<
+                  " From Key: " << associations.at(i)->getAssociationOrigin()->getKey().toStdString() <<
+                  " To Key:" << associations.at(i)->getAssocationTarget()->getKey().toStdString()  << std::endl;
+    }
 
     std::cout << "____END OF LINE____";
 
