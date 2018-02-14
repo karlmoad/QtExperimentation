@@ -10,10 +10,10 @@
 #include "classes/KeyedObject.h"
 
 enum class DriveTrain{
-    2WD = 0,
-    4WD = 1,
-    AWD = 3,
-    NWD = 4,
+    TWO_WD = 0,
+    FOUR_WD = 1,
+    ALL_WD = 3,
+    NO_WD = 4,
 };
 
 class Car : public KeyedObject {
@@ -21,12 +21,12 @@ private:
     QString m_Vin;
     int m_CylinderCount = 0;
     int m_HP;
-    DriveTrain m_Drivetrain = DriveTrain::NWD;
+    DriveTrain m_Drivetrain = DriveTrain::NO_WD;
     bool m_ManualTransmission = true;
 
     explicit Car(const QJsonObject &json);
 
-private:
+public:
     Car();
     Car(const Car &toCopy);
     ~Car();
