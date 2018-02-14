@@ -6,6 +6,7 @@
 #include "classes/Person.h"
 #include "classes/Car.h"
 #include "classes/House.h"
+#include "classes/Association.h"
 #include <QSharedPointer>
 #include <QJsonObject>
 #include <QJsonDocument>
@@ -147,6 +148,15 @@ int main() {
                   << " DT: " << (int)c->getDriveTrain()
                   << std::endl;
     }
+
+    QSharedPointer<Car> c = cars.at(0);
+    auto AP2C1 = QSharedPointer<Association<QSharedPointer<Person>, QSharedPointer<Car>>>(Association<QSharedPointer<Person>, QSharedPointer<Car>>::Builder().setType(AssociationType::Person2Car)->setAssociationOrigin(p1)->setAssociationTarget(c)->build());
+
+    std::cout << "Association 1: Person to Car " <<
+              " Key: " << AP2C1->getKey().toStdString() <<
+              " Person: Key: " << AP2C1->getAssociationOrigin()->getKey().toStdString() << " Name: " << AP2C1->getAssociationOrigin()->getName().toStdString() <<
+              " Car: Key:" << AP2C1->getAssocationTarget()->getKey().toStdString() << " VIN: " << AP2C1->getAssocationTarget()->getVin().toStdString() << std::endl;
+
 
     std::cout << "____END OF LINE____";
 
