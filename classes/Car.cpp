@@ -26,9 +26,7 @@ Car::Car(const Car &toCopy): KeyedObject(toCopy) {
     this->m_ManualTransmission = toCopy.m_ManualTransmission;
 }
 
-Car::~Car() {
-    //qDebug() << "Car : " << this->getKey() << "deleted";
-}
+Car::~Car() {}
 
 QString Car::getVin() const {
     return this->m_Vin;

@@ -22,11 +22,11 @@ int main() {
     
     QJsonDocument jdoc = QJsonDocument::fromJson(obj.toUtf8());
 
-    QSharedPointer<Person> p1 = QSharedPointer<Person>(Person::Builder(jdoc.object()).build());
+    Person *p1 = Person::Builder(jdoc.object()).build();
 
-    QSharedPointer<Person> p2 = QSharedPointer<Person>(Person::Builder(*p1).setName("Jane Doe")->setGender(Gender::FEMALE)->build());
+    Person *p2 = Person::Builder(*p1).setName("Jane Doe")->setGender(Gender::FEMALE)->build();
 
-    QSharedPointer<Person>  p3 = QSharedPointer<Person>(Person::Builder().setName("Jim Doe")->setHeightInInches(60)->setGender(Gender::MALE)->build());
+    Person *p3 = Person::Builder().setName("Jim Doe")->setHeightInInches(60)->setGender(Gender::MALE)->build();
 
     std::cout << "Person 3: Key: " << p3->getKey().toStdString()
               << " Name: " << p3->getName().toStdString()
@@ -50,30 +50,30 @@ int main() {
               << std::endl;
 
 
-    QList<QSharedPointer<House>> homes;
+    QList<House*> homes;
 
-    homes.append(QSharedPointer<House>(House::Builder().setColor("Blue")
+    homes.append(House::Builder().setColor("Blue")
                                                ->setBathroomCount(2)
                                                ->setFloorCount(1)
                                                ->setGarageSize(1)->setLivingSpace(1800)
-                                               ->setRoomCount(10)->build()));
+                                               ->setRoomCount(10)->build());
 
-    homes.append(QSharedPointer<House>(House::Builder().setColor("Red")
+    homes.append(House::Builder().setColor("Red")
                                                ->setBathroomCount(1)
                                                ->setFloorCount(1)
                                                ->setLivingSpace(1100)
-                                               ->setRoomCount(7)->build()));
+                                               ->setRoomCount(7)->build());
 
-    homes.append(QSharedPointer<House>(House::Builder().setColor("Grey")
+    homes.append(House::Builder().setColor("Grey")
                                                ->setBathroomCount(3)
                                                ->setFloorCount(3)
                                                ->setLivingSpace(3200)
                                                ->setGarageSize(4)
-                                               ->setRoomCount(15)->build()));
+                                               ->setRoomCount(15)->build());
 
 
     for(int i = 0; i < homes.size(); i++){
-        QSharedPointer<House> item = homes.at(i);
+        House *item = homes.at(i);
         std::cout << "House: " << i
                   << " Key: " << item->getKey().toStdString()
                   << " Square Feet: " << item->getSquareFeetLivingSpace()
@@ -83,65 +83,65 @@ int main() {
                   << " Number of floors: " << item->getNumberOfFloors() << std::endl;
     }
 
-    QList<QSharedPointer<Car>> cars;
-    cars.append(QSharedPointer<Car>(Car::Builder().setVehicleIdentificationNumber("123456")
+    QList<Car*> cars;
+    cars.append(Car::Builder().setVehicleIdentificationNumber("123456")
                                             ->setCylinderCount(4)
                                             ->setManualTransmission()
                                             ->setDriveTrain(DriveTrain::TWO_WD)
                                             ->setHorsePowerRating(102)
-                                            ->build()));
+                                            ->build());
 
-    cars.append(QSharedPointer<Car>(Car::Builder().setVehicleIdentificationNumber("JHFIJADOCNASOPDNC423E")
+    cars.append(Car::Builder().setVehicleIdentificationNumber("JHFIJADOCNASOPDNC423E")
                                             ->setCylinderCount(6)
                                             ->setAutomatictransmission()
                                             ->setDriveTrain(DriveTrain::TWO_WD)
                                             ->setHorsePowerRating(189)
-                                            ->build()));
+                                            ->build());
 
-    cars.append(QSharedPointer<Car>(Car::Builder().setVehicleIdentificationNumber("NJNQI2NRJKNQ-340-2809284")
+    cars.append(Car::Builder().setVehicleIdentificationNumber("NJNQI2NRJKNQ-340-2809284")
                                             ->setCylinderCount(8)
                                             ->setManualTransmission()
                                             ->setDriveTrain(DriveTrain::FOUR_WD)
                                             ->setHorsePowerRating(350)
-                                            ->build()));
+                                            ->build());
 
-    cars.append(QSharedPointer<Car>(Car::Builder().setVehicleIdentificationNumber("38483F0H3047H07402HHH")
+    cars.append(Car::Builder().setVehicleIdentificationNumber("38483F0H3047H07402HHH")
                                             ->setCylinderCount(10)
                                             ->setManualTransmission()
                                             ->setDriveTrain(DriveTrain::ALL_WD)
                                             ->setHorsePowerRating(590)
-                                            ->build()));
+                                            ->build());
 
-    cars.append(QSharedPointer<Car>(Car::Builder().setVehicleIdentificationNumber("HHH5H5HH5HH0W90RU4U093QJ")
+    cars.append(Car::Builder().setVehicleIdentificationNumber("HHH5H5HH5HH0W90RU4U093QJ")
                                             ->setCylinderCount(4)
                                             ->setManualTransmission()
                                             ->setDriveTrain(DriveTrain::ALL_WD)
                                             ->setHorsePowerRating(210)
-                                            ->build()));
+                                            ->build());
 
-    cars.append(QSharedPointer<Car>(Car::Builder().setVehicleIdentificationNumber("5Y82Y82Y845Y809488948594")
+    cars.append(Car::Builder().setVehicleIdentificationNumber("5Y82Y82Y845Y809488948594")
                                             ->setCylinderCount(6)
                                             ->setManualTransmission()
                                             ->setDriveTrain(DriveTrain::FOUR_WD)
                                             ->setHorsePowerRating(250)
-                                            ->build()));
+                                            ->build());
 
-    cars.append(QSharedPointer<Car>(Car::Builder().setVehicleIdentificationNumber("ZZZZZZ")
+    cars.append(Car::Builder().setVehicleIdentificationNumber("ZZZZZZ")
                                             ->setCylinderCount(4)
                                             ->setManualTransmission()
                                             ->setDriveTrain(DriveTrain::NO_WD)
                                             ->setHorsePowerRating(90)
-                                            ->build()));
+                                            ->build());
 
-    cars.append(QSharedPointer<Car>(Car::Builder().setVehicleIdentificationNumber("987654321")
+    cars.append(Car::Builder().setVehicleIdentificationNumber("987654321")
                                             ->setCylinderCount(5)
                                             ->setManualTransmission()
                                             ->setDriveTrain(DriveTrain::TWO_WD)
                                             ->setHorsePowerRating(120)
-                                            ->build()));
+                                            ->build());
 
     for(int i = 0; i < cars.size(); i++){
-        QSharedPointer<Car> c = cars.at(i);
+        Car* c = cars.at(i);
         std::cout << "Car :" << i
                   << " Key : " << c->getKey().toStdString()
                   << " VIN :" << c->getVin().toStdString()
@@ -151,8 +151,8 @@ int main() {
                   << std::endl;
     }
 
-    QSharedPointer<Car> c = cars.at(0);
-    auto AP2C1 = QSharedPointer<Association<QSharedPointer<Person>, QSharedPointer<Car>>>(Association<QSharedPointer<Person>, QSharedPointer<Car>>::Builder().setType(AssociationType::Person2Car)->setAssociationOrigin(p1)->setAssociationTarget(c)->build());
+    Car *c = cars.at(0);
+    auto AP2C1 = QSharedPointer<Association<Person,Car>>(Association<Person, Car>::Builder().setType(AssociationType::Person2Car)->setAssociationOrigin(p1)->setAssociationTarget(c)->build());
 
     std::cout << "Association 1: Person to Car " <<
               " Key: " << AP2C1->getKey().toStdString() <<
@@ -162,10 +162,10 @@ int main() {
 
     //Cast a person and car to keyed object and store in an association
 
-    QSharedPointer<KeyedObject> koFrom = static_cast<QSharedPointer<KeyedObject>>(p3);
-    QSharedPointer<KeyedObject> koTo = static_cast<QSharedPointer<KeyedObject>>(c);
+    KeyedObject *koFrom = static_cast<KeyedObject*>(p3);
+    KeyedObject *koTo = static_cast<KeyedObject*>(c);
 
-    auto assoc2 = QSharedPointer<Association<QSharedPointer<KeyedObject>, QSharedPointer<KeyedObject>>>(Association<QSharedPointer<KeyedObject>, QSharedPointer<KeyedObject>>::Builder().setType(AssociationType::Person2Car)->setAssociationOrigin(koFrom)->setAssociationTarget(koTo)->build());
+    auto assoc2 = QSharedPointer<Association<KeyedObject,KeyedObject>>(Association<KeyedObject, KeyedObject>::Builder().setType(AssociationType::Person2Car)->setAssociationOrigin(koFrom)->setAssociationTarget(koTo)->build());
 
     std::cout << "Test KeyedObject Association 2: Person to Car " <<
               " Key: " << assoc2->getKey().toStdString() <<
@@ -174,8 +174,8 @@ int main() {
 
     //Test Factory method
 
-    auto assoc3 = QSharedPointer<Association<QSharedPointer<KeyedObject>, QSharedPointer<KeyedObject>>>(
-            AssociationFactory::CreateAndCast< QSharedPointer<KeyedObject>, QSharedPointer<KeyedObject> , QSharedPointer<Person>, QSharedPointer<Car>>(p2,c, AssociationType::Person2Car));
+    auto assoc3 = QSharedPointer<Association<KeyedObject,KeyedObject>>(
+            AssociationFactory::CreateAndCast<KeyedObject,KeyedObject,Person,Car>(p2,c, AssociationType::Person2Car));
 
 
     std::cout << "Test KeyedObject Association 3: Person to Car " <<
@@ -183,6 +183,17 @@ int main() {
               " Person: Key: " << assoc3->getAssociationOrigin()->getKey().toStdString() <<
               " Car: Key:" << assoc3->getAssocationTarget()->getKey().toStdString()  << std::endl;
 
+
+    auto assocZ = Association<KeyedObject,KeyedObject>::StaticCast<Person,Car>(assoc3);
+
+    std::cout << "Casted Association 3: Person to Car " <<
+              " Key: " << assocZ->getKey().toStdString() <<
+              " Person: Key: " << assocZ->getAssociationOrigin()->getKey().toStdString() << " Name: " << assocZ->getAssociationOrigin()->getName().toStdString() <<
+              " Car: Key:" << assocZ->getAssocationTarget()->getKey().toStdString() << " VIN: " << assocZ->getAssocationTarget()->getVin().toStdString() << std::endl;
+
+
+    /*
+     *
 
     //Now make a list to hold various associations i.e. Person -> Car, Car -> House, Person -> House ...etc. all inherit from KeyedObject
     QList<QSharedPointer<Association<QSharedPointer<KeyedObject>, QSharedPointer<KeyedObject>>>> associations;
@@ -229,9 +240,9 @@ int main() {
 
     auto taba = QSharedPointer<Association<QSharedPointer<House>, QSharedPointer<Car>>>(
             AssociationFactory::BoxAndUnbox< QSharedPointer<House>, QSharedPointer<Car> , QSharedPointer<KeyedObject>, QSharedPointer<KeyedObject>>(*(assooc4)));
+*/
 
-
-    std::cout << "____END OF LINE____";
+    std::cout << "____END OF LINE____\n\n";
 
     return 0;
 }

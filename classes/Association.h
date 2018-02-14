@@ -24,8 +24,8 @@ enum class AssociationType{
 template <class A, class B>
 class Association: public KeyedObject{
 private:
-    A m_From;
-    B m_to;
+    QSharedPointer<A> m_From;
+    QSharedPointer<B> m_to;
     AssociationType m_Type = AssociationType::UNKNOWN;
 
 public:
@@ -37,15 +37,13 @@ public:
         this->m_to = toCopy.m_to;
     }
 
-    ~Association(){
-        //qDebug() << "Association: " << this->getKey() << "deleted";
-    }
+    ~Association(){}
 
-    A getAssociationOrigin() const {
+    QSharedPointer<A> getAssociationOrigin() const {
         return this->m_From;
     }
 
-    B getAssocationTarget() const{
+    QSharedPointer<B> getAssocationTarget() const{
         return this->m_to;
     }
 
@@ -53,6 +51,37 @@ public:
         return this->m_Type;
     }
 
+
+    template<typename X, typename Y>
+    static void StaticCast(Association<A,B> *association){
+        QSharedPointer<X> x = association->getAssociationOrigin().template staticCast<X>();
+        QSharedPointer<Y> y = association->getAssocationTarget().template staticCast<Y>();
+        QString tKey = association->getKey();
+
+        association = Association<X,Y>::Builder().setType(association->getType())->build();
+        association->m_From = x;
+        association->m_to = y;
+        association->setKey(tKey);
+
+        return;
+    };
+
+    template<typename X, typename Y>
+    static QSharedPointer<Association<X,Y>> &StaticCast(QSharedPointer<Association<A,B>> &association){
+        QSharedPointer<X> x = association->getAssociationOrigin().template staticCast<X>();
+        QSharedPointer<Y> y = association->getAssocationTarget().template staticCast<Y>();
+        QString tKey = association->getKey();
+        AssociationType tType = association->getType();
+
+        association.clear();
+
+        QSharedPointer<Association<X,Y>> out = QSharedPointer<Association<X,Y>>(Association<X,Y>::Builder().setType(tType)->build());
+        out->m_From = x;
+        out->m_to = y;
+        out->setKey(tKey);
+
+        return out;
+    }
 
     class Builder{
     private:
@@ -62,13 +91,13 @@ public:
             this->instance = new Association<A,B>();
         }
 
-        Builder* setAssociationOrigin(A &origin){
-            this->instance->m_From = origin;
+        Builder* setAssociationOrigin(A *origin){
+            this->instance->m_From = QSharedPointer<A>(origin);
             return this;
         }
 
-        Builder* setAssociationTarget(B &target){
-            this->instance->m_to = target;
+        Builder* setAssociationTarget(B *target){
+            this->instance->m_to = QSharedPointer<B>(target);
             return this;
         }
 
@@ -88,22 +117,13 @@ class AssociationFactory {
 public:
 
     template<typename X, typename Y, typename A, typename B>
-    static Association<X, Y> *CreateAndCast(A &origin, B &target, AssociationType type) {
+    static Association<X, Y> *CreateAndCast(A *origin, B *target, AssociationType type) {
 
-        X x = static_cast<X>(origin);
-        Y y = static_cast<Y>(target);
+        X *x = static_cast<X*>(origin);
+        Y *y = static_cast<Y*>(target);
 
         return typename Association<X, Y>::Builder().setType(type)->setAssociationOrigin(x)->setAssociationTarget(
                 y)->build();
-    }
-
-    template<typename X, typename Y, typename A, typename B>
-    static Association<X, Y> *BoxAndUnbox(Association<A, B> *input) {
-        X x = static_cast<X>(input->getAssociationOrigin());
-        Y y = static_cast<Y>(input->getAssocationTarget());
-
-        return typename Association<X, Y>::Builder().setType(input->getType())->setAssociationOrigin(
-                x)->setAssociationTarget(y)->build();
     }
 };
 

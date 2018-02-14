@@ -27,9 +27,7 @@ House::House(const House &toCopy) {
     this->m_Rooms = toCopy.m_Rooms;
 }
 
-House::~House() {
-    //qDebug() << "House : " << this->getKey() << "deleted";
-}
+House::~House() {}
 
 QString House::getColor() const {
     return this->m_Color;

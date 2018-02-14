@@ -6,6 +6,7 @@
 #define QTEXPERIMENTATION_KEYEDOBJECT_H
 
 #include <QString>
+#include <QDebug>
 #include "classes/Utilities.h"
 
 class KeyedObject {
@@ -14,7 +15,7 @@ public:
     KeyedObject(KeyedObject const &toCopy){
         this->m_key = toCopy.m_key;
     }
-    virtual ~KeyedObject()=default;
+    virtual ~KeyedObject(){};
 
     QString getKey() const{
         return this->m_key;
