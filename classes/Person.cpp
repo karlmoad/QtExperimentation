@@ -16,7 +16,7 @@ Person::Person(const Person &toCopy) : KeyedObject(toCopy) {
     this->m_height_inches = toCopy.m_height_inches;
 }
 
-Person::Person(const QJsonObject &json) {
+Person::Person(const QJsonObject &json) : KeyedObject() {
     if(json.contains("name") && json.contains("key") && json.contains("height") && json.contains("gender")){
         this->setKey(json["key"].toString(""));
         this->m_Name = json["name"].toString("");
