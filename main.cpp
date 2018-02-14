@@ -198,7 +198,7 @@ int main() {
     for(int i = 0; i < cars.size() ; i++){
         int part = i % 3;
         QSharedPointer<Car> item = cars.at(i);
-        
+
         switch(part){
             case 1:
                 associations.append(QSharedPointer<Association<QSharedPointer<KeyedObject>, QSharedPointer<KeyedObject>>>(
@@ -222,6 +222,14 @@ int main() {
                   " From Key: " << associations.at(i)->getAssociationOrigin()->getKey().toStdString() <<
                   " To Key:" << associations.at(i)->getAssocationTarget()->getKey().toStdString()  << std::endl;
     }
+
+    //Now reverse the cast and return orig types of the association
+
+    auto assooc4 = associations.at(6);
+
+    auto taba = QSharedPointer<Association<QSharedPointer<House>, QSharedPointer<Car>>>(
+            AssociationFactory::BoxAndUnbox< QSharedPointer<House>, QSharedPointer<Car> , QSharedPointer<KeyedObject>, QSharedPointer<KeyedObject>>(*(assooc4)));
+
 
     std::cout << "____END OF LINE____";
 

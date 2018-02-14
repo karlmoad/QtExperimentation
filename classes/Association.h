@@ -84,21 +84,28 @@ public:
 };
 
 
-class AssociationFactory{
+class AssociationFactory {
 public:
 
     template<typename X, typename Y, typename A, typename B>
-    static Association<X,Y> *CreateAndCast(A &origin, B &target, AssociationType type){
+    static Association<X, Y> *CreateAndCast(A &origin, B &target, AssociationType type) {
 
         X x = static_cast<X>(origin);
         Y y = static_cast<Y>(target);
 
-        return typename Association<X, Y>::Builder().setType(type)->setAssociationOrigin(x)->setAssociationTarget(y)->build();
+        return typename Association<X, Y>::Builder().setType(type)->setAssociationOrigin(x)->setAssociationTarget(
+                y)->build();
+    }
+
+    template<typename X, typename Y, typename A, typename B>
+    static Association<X, Y> *BoxAndUnbox(Association<A, B> *input) {
+        X x = static_cast<X>(input->getAssociationOrigin());
+        Y y = static_cast<Y>(input->getAssocationTarget());
+
+        return typename Association<X, Y>::Builder().setType(input->getType())->setAssociationOrigin(
+                x)->setAssociationTarget(y)->build();
     }
 };
-
-
-
 
 
 #endif //QTEXPERIMENTATION_ASSOCIATION_H
