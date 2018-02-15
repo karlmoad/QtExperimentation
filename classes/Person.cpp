@@ -9,7 +9,7 @@ Person::Person():KeyedObject(){};
 Person::~Person(){};
 
 Person::Person(const Person &toCopy) : KeyedObject(toCopy) {
-    this->m_Name = toCopy.m_Name;
+    this->m_Name = QString(toCopy.m_Name);
     this->m_Sex = toCopy.m_Sex;
     this->m_height_inches = toCopy.m_height_inches;
 }

@@ -19,7 +19,7 @@ House::House(const QJsonObject &json) {
 House::House() : KeyedObject() {}
 
 House::House(const House &toCopy) {
-    this->m_Color = toCopy.m_Color;
+    this->m_Color = QString(toCopy.m_Color);
     this->m_Floors = toCopy.m_Floors;
     this->m_Bathrooms = toCopy.m_Bathrooms;
     this->m_Garagesize = toCopy.m_Garagesize;

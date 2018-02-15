@@ -19,7 +19,7 @@ Car::Car(const QJsonObject &json) {
 Car::Car() : KeyedObject() {}
 
 Car::Car(const Car &toCopy): KeyedObject(toCopy) {
-    this->m_Vin = toCopy.m_Vin;
+    this->m_Vin = QString(toCopy.m_Vin);
     this->m_CylinderCount = toCopy.m_CylinderCount;
     this->m_HP = toCopy.m_HP;
     this->m_Drivetrain = toCopy.m_Drivetrain;

@@ -184,19 +184,17 @@ int main() {
               " Car: Key:" << assoc3->getAssocationTarget()->getKey().toStdString()  << std::endl;
 
 
-    auto assocZ = Association<KeyedObject,KeyedObject>::StaticCast<Person,Car>(assoc3);
+    QSharedPointer<Person> pr;
+    QSharedPointer<Car> cr;
+    AssociationFactory::OriginTarget_Cast<Person, Car, KeyedObject, KeyedObject>(pr,cr,assoc3);
 
-    std::cout << "Casted Association 3: Person to Car " <<
-              " Key: " << assocZ->getKey().toStdString() <<
-              " Person: Key: " << assocZ->getAssociationOrigin()->getKey().toStdString() << " Name: " << assocZ->getAssociationOrigin()->getName().toStdString() <<
-              " Car: Key:" << assocZ->getAssocationTarget()->getKey().toStdString() << " VIN: " << assocZ->getAssocationTarget()->getVin().toStdString() << std::endl;
-
-
-    /*
-     *
+    std::cout << "Casted Association 3 Values back to orig types: Person to Car " <<
+              " Key: " << assoc3->getKey().toStdString() <<
+              " Person: Key: " << pr->getKey().toStdString() << " Name: " << pr->getName().toStdString() <<
+              " Car: Key:" << cr->getKey().toStdString() << " VIN: " << cr->getVin().toStdString() << std::endl;
 
     //Now make a list to hold various associations i.e. Person -> Car, Car -> House, Person -> House ...etc. all inherit from KeyedObject
-    QList<QSharedPointer<Association<QSharedPointer<KeyedObject>, QSharedPointer<KeyedObject>>>> associations;
+    QList<QSharedPointer<Association<KeyedObject,KeyedObject>>> associations;
     associations.append(assoc2);
     associations.append(assoc3);
 
@@ -208,20 +206,20 @@ int main() {
 
     for(int i = 0; i < cars.size() ; i++){
         int part = i % 3;
-        QSharedPointer<Car> item = cars.at(i);
+        Car* item = cars.at(i);
 
         switch(part){
             case 1:
-                associations.append(QSharedPointer<Association<QSharedPointer<KeyedObject>, QSharedPointer<KeyedObject>>>(
-                        AssociationFactory::CreateAndCast< QSharedPointer<KeyedObject>, QSharedPointer<KeyedObject> , QSharedPointer<House>, QSharedPointer<Car>>(h1,item, AssociationType::House2Car)));
+                associations.append(QSharedPointer<Association<KeyedObject,KeyedObject>>(
+                        AssociationFactory::CreateAndCast< KeyedObject, KeyedObject , House, Car>(h1,item, AssociationType::House2Car)));
                 break;
             case 2:
-                associations.append(QSharedPointer<Association<QSharedPointer<KeyedObject>, QSharedPointer<KeyedObject>>>(
-                        AssociationFactory::CreateAndCast< QSharedPointer<KeyedObject>, QSharedPointer<KeyedObject> , QSharedPointer<House>, QSharedPointer<Car>>(h2,item, AssociationType::House2Car)));
+                associations.append(QSharedPointer<Association<KeyedObject,KeyedObject>>(
+                        AssociationFactory::CreateAndCast< KeyedObject, KeyedObject , House, Car>(h2,item, AssociationType::House2Car)));
                 break;
             default:
-                associations.append(QSharedPointer<Association<QSharedPointer<KeyedObject>, QSharedPointer<KeyedObject>>>(
-                        AssociationFactory::CreateAndCast< QSharedPointer<KeyedObject>, QSharedPointer<KeyedObject> , QSharedPointer<House>, QSharedPointer<Car>>(h3,item, AssociationType::House2Car)));
+                associations.append(QSharedPointer<Association<KeyedObject,KeyedObject>>(
+                        AssociationFactory::CreateAndCast< KeyedObject, KeyedObject , House, Car>(h3,item, AssociationType::House2Car)));
                 break;
         }
     }
@@ -235,12 +233,6 @@ int main() {
     }
 
     //Now reverse the cast and return orig types of the association
-
-    auto assooc4 = associations.at(6);
-
-    auto taba = QSharedPointer<Association<QSharedPointer<House>, QSharedPointer<Car>>>(
-            AssociationFactory::BoxAndUnbox< QSharedPointer<House>, QSharedPointer<Car> , QSharedPointer<KeyedObject>, QSharedPointer<KeyedObject>>(*(assooc4)));
-*/
 
     std::cout << "____END OF LINE____\n\n";
 
