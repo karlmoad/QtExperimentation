@@ -14,20 +14,20 @@
 
 class Utilities{
 public :
-    static QString toSHA1Hash(const QString &data){
+    static const QString toSHA1Hash(const QString &data){
         return QString(QCryptographicHash::hash(data.toUtf8(), QCryptographicHash::Sha1).toHex());
     }
 
-    static QString generateNewKey(){
+    static const QString generateNewKey(){
         return QUuid::createUuid().toString();
     }
 
-    static QString serializeJsonToString(const QJsonObject &json){
+    static const QString serializeJsonToString(const QJsonObject &json){
         QJsonDocument jdoc = QJsonDocument(json);
         return QString::fromUtf8(jdoc.toJson(QJsonDocument::JsonFormat::Compact));
     }
 
-    static QJsonObject deserializeStringToJson(const QString &json){
+    static const QJsonObject deserializeStringToJson(const QString &json){
         QJsonDocument jobj = QJsonDocument::fromJson(json.toUtf8());
         return jobj.object();
     }

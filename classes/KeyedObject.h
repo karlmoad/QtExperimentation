@@ -17,7 +17,7 @@ public:
     }
     virtual ~KeyedObject(){};
 
-    QString getKey() const{
+    const QString &getKey() const{
         return this->m_key;
     }
 
@@ -30,7 +30,7 @@ public:
     }
 
 protected:
-    void setKey(QString keyVal) {
+    void setKey(QString const &keyVal) {
         if(!keyVal.isNull() && !keyVal.isEmpty()) {
             this->m_key = keyVal;
         }
