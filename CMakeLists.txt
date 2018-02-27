@@ -11,6 +11,6 @@ set(CMAKE_AUTORCC ON)
 
 find_package(Qt5 COMPONENTS Core Widgets Sql REQUIRED)
 
-add_executable(QtExperimentation main.cpp classes/KeyedObject.h classes/Utilities.h classes/Person.cpp classes/Person.h classes/Gender.h classes/Car.cpp classes/Car.h classes/House.cpp classes/House.h classes/Association.h)
+add_executable(QtExperimentation main.cpp classes/KeyedObject.h classes/Utilities.h classes/Person.cpp classes/Person.h classes/Gender.h classes/Car.cpp classes/Car.h classes/House.cpp classes/House.h classes/Association.h classes/EventSource.cpp classes/EventSource.h classes/EventReceiver.cpp classes/EventReceiver.h)
 
 target_link_libraries(QtExperimentation Qt5::Core Qt5::Widgets Qt5::Sql)

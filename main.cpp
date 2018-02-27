@@ -9,6 +9,8 @@
 #include "classes/Association.h"
 #include "classes/Utilities.h"
 #include "classes/KeyedObject.h"
+#include "classes/EventSource.h"
+#include "classes/EventReceiver.h"
 #include <QSharedPointer>
 #include <QJsonObject>
 #include <QJsonDocument>
@@ -234,6 +236,15 @@ int main() {
 
     //Now reverse the cast and return orig types of the association
 
+
+    EventSource source = EventSource();
+    EventReceiver receiver = EventReceiver();
+
+    source.registerReceiver(&receiver, &EventReceiver::printMyPrivates);
+
+    source.raiseEvent();
+
+    
     std::cout << "____END OF LINE____\n\n";
 
     return 0;
