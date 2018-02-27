@@ -17,6 +17,7 @@
 #include <QString>
 #include <QList>
 
+
 int main() {
 
 
@@ -244,7 +245,7 @@ int main() {
 
     source.raiseEvent();
 
-    
+
     std::cout << "____END OF LINE____\n\n";
 
     return 0;

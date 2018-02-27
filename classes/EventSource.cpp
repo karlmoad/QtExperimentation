@@ -11,6 +11,7 @@ void EventSource::registerReceiver(receiverPtr rec, functionPtr func) {
 
 void EventSource::raiseEvent() {
     if(this->_func != nullptr && this->_receiver != nullptr){
-        std:: cout << "Length of event message: " << (_receiver->*_func)() << std::endl;
+        std:: cout << "Length of event message: " << (_receiver->*_func)() << std::endl;  // <- Works
+        //std:: cout << "Length of event message: " << CALL_MEMBER_FN(this->_receiver, this->_func) << std::endl; <- does not work
     }
 }

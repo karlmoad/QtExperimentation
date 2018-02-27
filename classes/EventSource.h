@@ -8,6 +8,7 @@
 #include <iostream>
 #include "classes/EventReceiver.h"
 
+#define CALL_MEMBER_FN(object,ptrToMember)  ((object->*ptrToMember))
 typedef unsigned long (EventReceiver::*functionPtr)();
 typedef EventReceiver* receiverPtr;
 
