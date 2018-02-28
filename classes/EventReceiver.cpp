@@ -4,7 +4,10 @@
 
 #include "EventReceiver.h"
 
-unsigned long EventReceiver::printMyPrivates() {
-    std::cout << this->_Message << std::endl;
-    return this->_Message.length();
+void EventReceiver::printMe() {
+    std::cout << this->_Message << " - From: " << this->_name << std::endl;
+}
+
+void EventReceiver::setMyName(std::string const &name) {
+    this->_name = name;
 }

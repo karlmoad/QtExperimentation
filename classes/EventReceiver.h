@@ -11,8 +11,10 @@ class EventReceiver {
 
 public:
     EventReceiver()=default;
-    unsigned long printMyPrivates();
+    void setMyName(std::string const &name);
+    void printMe();
 private:
+    std::string _name;
     std::string _Message="This is private but we are going to print it";
 };
 

@@ -6,25 +6,40 @@
 #define QTEXPERIMENTATION_EVENTSOURCE_H
 
 #include <iostream>
+#include <functional>
+#include <map>
 #include "classes/EventReceiver.h"
-
-#define CALL_MEMBER_FN(object,ptrToMember)  ((object->*ptrToMember))
-typedef unsigned long (EventReceiver::*functionPtr)();
-typedef EventReceiver* receiverPtr;
 
 
 class EventSource {
 
 public:
-    EventSource()=default;
-    void registerReceiver(receiverPtr, functionPtr);
-    void raiseEvent();
+    EventSource(): _current_id_(0) {}
+
+    template <typename T>
+    void registerReceiver(T *instance, void(T::*func)()) {
+        this->connect([=](){
+            (instance->*func)();
+        });
+
+    }
+
+    void raise() {
+        for(auto it : _slots) {
+            it.second();
+        }
+    }
 
 private:
-    functionPtr _func = nullptr;
-    receiverPtr _receiver = nullptr;
+    void connect(std::function<void()> const& slot) const {
+        this->_slots.insert(std::make_pair(++_current_id_, slot));
+    }
 
+    mutable std::map<int, std::function<void()>> _slots;
+    mutable int _current_id_;
 };
+
+
 
 
 #endif //QTEXPERIMENTATION_EVENTSOURCE_H

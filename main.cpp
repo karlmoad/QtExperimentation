@@ -239,12 +239,19 @@ int main() {
 
 
     EventSource source = EventSource();
-    EventReceiver receiver = EventReceiver();
+    EventReceiver r1;
+    EventReceiver r2;
+    EventReceiver r3;
 
-    source.registerReceiver(&receiver, &EventReceiver::printMyPrivates);
+    r1.setMyName("John");
+    r2.setMyName("Jane");
+    r3.setMyName("Jimmy");
 
-    source.raiseEvent();
+    source.registerReceiver(&r1, &EventReceiver::printMe);
+    source.registerReceiver(&r2, &EventReceiver::printMe);
+    source.registerReceiver(&r3, &EventReceiver::printMe);
 
+    source.raise();
 
     std::cout << "____END OF LINE____\n\n";
 
