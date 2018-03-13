@@ -12,6 +12,7 @@
 #include "classes/EventSource.h"
 #include "classes/EventReceiver.h"
 #include "classes/Reactor.h"
+#include "classes/Product.h"
 #include <QSharedPointer>
 #include <QJsonObject>
 #include <QJsonDocument>
@@ -257,6 +258,21 @@ int main() {
 
     Reactor r(1);
     std::cout << "A: " << r.getA() << " B: " << r.getB() << " X: " << r.getX() << std::endl;
+
+
+    std::cout <<" DYNAMIC INSTANTIATION" << std::endl;
+
+    Product *prod1 = Product::getObject("Apple");
+    Product *prod2 = Product::getObject("Banana");
+
+    if(prod1 != nullptr){
+        std::cout << "Product 1 is a: " << prod1->getName() << std::endl;
+    }
+
+    if(prod2 != nullptr){
+        std::cout << "Product 2 is a: " << prod2->getName() << std::endl;
+    }
+
     std::cout << "____END OF LINE____\n\n";
 
     return 0;
