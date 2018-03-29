@@ -16,6 +16,8 @@
 #include <QSharedPointer>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonValue>
 #include <QString>
 #include <QList>
 
@@ -23,11 +25,38 @@
 int main() {
 
 
-    QString obj = "{\"key\":\"{1e98c284-e313-4c9b-8067-05b261a2ac28}\", \"name\":\"John Doe\", \"height\":56, \"gender\":1}";
-    
+    QString obj = "{\"key\":\"{1e98c284-e313-4c9b-8067-05b261a2ac28}\", \"name\":\"John Doe\", \"height\":56, \"gender\":1, \"aka\":[\"Jack\",\"Tader\"]}";
     QJsonDocument jdoc = QJsonDocument::fromJson(obj.toUtf8());
 
-    Person *p1 = Person::Builder(jdoc.object()).build();
+    QJsonObject json = jdoc.object();
+
+    std::cout << "Is AKA Array: " << json["aka"].isArray() << std::endl;
+
+
+    json["locked"] = false;
+    std::cout << json["locked"].toBool() << std::endl;
+
+    QString pathex = "Code.system.system_id.key";
+    int idx = pathex.lastIndexOf('.');
+    QString front = pathex.left(idx);
+    QString back = pathex.right(pathex.size()-idx);
+    std::cout << "Up to last . :" << front.toStdString() << std::endl;
+    std::cout << "After last . :" << back.toStdString() << std::endl;
+
+
+
+
+
+
+
+
+    QJsonArray akas = json["aka"].toArray();
+    for(int i=0; i< akas.size(); i++){
+            std::cout << "AKA : " << akas.at(i).toString().toStdString() << std::endl;
+    }
+
+
+    Person *p1 = Person::Builder(json).build();
 
     Person *p2 = Person::Builder(*p1).setName("Jane Doe")->setGender(Gender::FEMALE)->build();
 
