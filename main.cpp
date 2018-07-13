@@ -20,12 +20,75 @@
 #include <QJsonValue>
 #include <QString>
 #include <QList>
+#include <bitset>
+
+
+void delta_encode(unsigned char *buffer, int length)
+{
+    unsigned char last = 0;
+    for (int i = 0; i < length; i++)
+    {
+        unsigned char current = buffer[i];
+        buffer[i] = current - last;
+        last = current;
+    }
+}
+
+void delta_decode(unsigned char *buffer, int length)
+{
+    unsigned char last = 0;
+    for (int i = 0; i < length; i++)
+    {
+        unsigned char delta = buffer[i];
+        buffer[i] = delta + last;
+        last = buffer[i];
+    }
+}
+
+template<typename N>
+N shift(N num, N shift) {
+    if(sizeof(num) == 4) {
+        return (shift & 0x1f) == 0 ? num : ((num >> 1) & 0x7fffffff) >> ((shift & 0x1f) - 1);
+    }
+    else if(sizeof(num) == 8) {
+        return (shift & 0x3f) == 0 ? num : ((num >> 1) & 0x7fffffffffffffffLL) >> ((shift & 0x3f) - 1);
+    }
+    else {
+        return 0;
+    }
+}
+
+template <typename T>
+void bitpack(T i) {
+    uint8_t b;
+    while ((i & ~0x7f) != 0) {
+
+        b = ((uint8_t)((i & 0x7f) | 0x80));
+        std::bitset<8> v(b);
+
+        std::cout << v << " | ";
+
+        if(sizeof(i) == 4) {
+            i = shift<uint32_t>(i,7);
+        }
+        else if(sizeof(i) == 8) {
+            i = shift<uint64_t>(i,7);
+        }
+        else {
+            return;
+        }
+    }
+    b = ((uint8_t)((i & 0x7f) | 0x80));
+    std::bitset<8> v(b);
+
+    std::cout << v <<std::endl;
+}
 
 
 int main() {
 
 
-    QString obj = "{\"key\":\"{1e98c284-e313-4c9b-8067-05b261a2ac28}\", \"name\":\"John Doe\", \"height\":56, \"gender\":1, \"aka\":[\"Jack\",\"Tader\"]}";
+    QString obj = "{\"key\":\"{1e98c284-e313-4c9b-8067-05b261a2ac28}\", \"name\":\"John Doe\", \"height\":56, \"gender\":1, \"aka\":[\"Jack\",\"Tader\"], \"children\":[{ \"id\":1, \"name\":\"able\"},{\"id\":2, \"name\":\"kane\"}]}";
     QJsonDocument jdoc = QJsonDocument::fromJson(obj.toUtf8());
 
     QJsonObject json = jdoc.object();
@@ -302,7 +365,51 @@ int main() {
         std::cout << "Product 2 is a: " << prod2->getName() << std::endl;
     }
 
+
+    QString date = "04/28/2006";
+
+    std::cout << "Month: " << date.section('/',0,0).toStdString() << std::endl;
+    std::cout << "Day: " << date.section('/',1,1).toStdString() << std::endl;
+    std::cout << "Year: " << date.section('/',2,2).toStdString() << std::endl;
+
+    QString pathTest = "John.Jacob.Jingleheimer.schmidt";
+
+    std::cout << "Test Start: " << pathTest.section('.',0,0).toStdString() << std::endl;
+    std::cout << "Test rest: " << pathTest.section('.',1).toStdString() << std::endl;
+
+    std::cout << "Bit packing example and demo" << std::endl;
+
+    uint32_t val;
+
+    std::cout << "Enter an integer value :";
+
+    std::cin >> val;
+
+    std::cout << std::endl;
+
+    std::cout << "Enter a long value :";
+
+    uint64_t  val2;
+    std::cin >> val2;
+
+    std::bitset<32> x(val);
+    std::bitset<64> x2(val2);
+
+    std::cout << "Input value1: " << val << " : " << x << std::endl;
+    std::cout << "Input value2: " << val2 << " : " << x2 << std::endl;
+
+    std::cout << "bit packed value 1 :" << std::endl;
+    bitpack<uint32_t>(val);
+    std::cout << "bit packed value 2 :" << std::endl;
+    bitpack<uint64_t>(val2);
+
     std::cout << "____END OF LINE____\n\n";
+
+
+
+
+
+
 
     return 0;
 }
