@@ -23,65 +23,37 @@
 #include <bitset>
 
 
-void delta_encode(unsigned char *buffer, int length)
-{
-    unsigned char last = 0;
-    for (int i = 0; i < length; i++)
-    {
-        unsigned char current = buffer[i];
-        buffer[i] = current - last;
-        last = current;
+template<typename int_t = uint64_t>
+size_t encodeVarint(int_t value, uint8_t* output) {
+    size_t outputSize = 0;
+    //While more than 7 bits of data are left, occupy the last output byte
+    // and set the next byte flag
+    while (value > 127) {
+        //|128: Set the next byte flag
+        output[outputSize] = ((uint8_t)(value & 127)) | 128;
+        //Remove the seven bits we just wrote
+        value >>= 7;
+        outputSize++;
     }
+    output[outputSize++] = ((uint8_t)value) & 127;
+    return outputSize;
 }
-
-void delta_decode(unsigned char *buffer, int length)
-{
-    unsigned char last = 0;
-    for (int i = 0; i < length; i++)
-    {
-        unsigned char delta = buffer[i];
-        buffer[i] = delta + last;
-        last = buffer[i];
-    }
-}
-
-template<typename N>
-N shift(N num, N shift) {
-    if(sizeof(num) == 4) {
-        return (shift & 0x1f) == 0 ? num : ((num >> 1) & 0x7fffffff) >> ((shift & 0x1f) - 1);
-    }
-    else if(sizeof(num) == 8) {
-        return (shift & 0x3f) == 0 ? num : ((num >> 1) & 0x7fffffffffffffffLL) >> ((shift & 0x3f) - 1);
-    }
-    else {
-        return 0;
-    }
-}
-
-template <typename T>
-void bitpack(T i) {
-    uint8_t b;
-    while ((i & ~0x7f) != 0) {
-
-        b = ((uint8_t)((i & 0x7f) | 0x80));
-        std::bitset<8> v(b);
-
-        std::cout << v << " | ";
-
-        if(sizeof(i) == 4) {
-            i = shift<uint32_t>(i,7);
-        }
-        else if(sizeof(i) == 8) {
-            i = shift<uint64_t>(i,7);
-        }
-        else {
-            return;
+/**
+ * Decodes an unsigned variable-length integer using the MSB algorithm.
+ * @param value A variable-length encoded integer of arbitrary size.
+ * @param inputSize How many bytes are
+ */
+template<typename int_t = uint64_t>
+int_t decodeVarint(uint8_t* input, size_t inputSize) {
+    int_t ret = 0;
+    for (size_t i = 0; i < inputSize; i++) {
+        ret |= (input[i] & 127) << (7 * i);
+        //If the next-byte flag is set
+        if(!(input[i] & 128)) {
+            break;
         }
     }
-    b = ((uint8_t)((i & 0x7f) | 0x80));
-    std::bitset<8> v(b);
-
-    std::cout << v <<std::endl;
+    return ret;
 }
 
 
@@ -399,9 +371,22 @@ int main() {
     std::cout << "Input value2: " << val2 << " : " << x2 << std::endl;
 
     std::cout << "bit packed value 1 :" << std::endl;
-    bitpack<uint32_t>(val);
+
+    uint8_t* buf1;
+    size_t outsize = encodeVarint<uint32_t>(val, buf1);
+    std::cout << "output size of packed value1 :" << outsize << std::endl;
+    std::cout << decodeVarint(buf1, outsize) << endl;
+
     std::cout << "bit packed value 2 :" << std::endl;
-    bitpack<uint64_t>(val2);
+
+    uint8_t* buf2;
+    size_t outsize2 = encodeVarint<uint64_t>(val2, buf2);
+    std::cout << "output size of packed value2 :" << outsize2 << std::endl;
+    std::cout << decodeVarint(buf2, outsize2) << endl;
+
+
+
+
 
     std::cout << "____END OF LINE____\n\n";
 
