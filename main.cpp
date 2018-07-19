@@ -21,6 +21,7 @@
 #include <QString>
 #include <QList>
 #include <bitset>
+#include "classes/Formatter.h"
 
 
 template<typename int_t = uint64_t>
@@ -349,44 +350,53 @@ int main() {
     std::cout << "Test Start: " << pathTest.section('.',0,0).toStdString() << std::endl;
     std::cout << "Test rest: " << pathTest.section('.',1).toStdString() << std::endl;
 
-    std::cout << "Bit packing example and demo" << std::endl;
-
-    uint32_t val;
-
-    std::cout << "Enter an integer value :";
-
-    std::cin >> val;
-
-    std::cout << std::endl;
-
-    std::cout << "Enter a long value :";
-
-    uint64_t  val2;
-    std::cin >> val2;
-
-    std::bitset<32> x(val);
-    std::bitset<64> x2(val2);
-
-    std::cout << "Input value1: " << val << " : " << x << std::endl;
-    std::cout << "Input value2: " << val2 << " : " << x2 << std::endl;
-
-    std::cout << "bit packed value 1 :" << std::endl;
-
-    uint8_t* buf1;
-    size_t outsize = encodeVarint<uint32_t>(val, buf1);
-    std::cout << "output size of packed value1 :" << outsize << std::endl;
-    std::cout << decodeVarint(buf1, outsize) << endl;
-
-    std::cout << "bit packed value 2 :" << std::endl;
-
-    uint8_t* buf2;
-    size_t outsize2 = encodeVarint<uint64_t>(val2, buf2);
-    std::cout << "output size of packed value2 :" << outsize2 << std::endl;
-    std::cout << decodeVarint(buf2, outsize2) << endl;
-
-
+//    std::cout << "Bit packing example and demo" << std::endl;
+//
+//    uint32_t val;
+//
+//    std::cout << "Enter an integer value :";
+//
+//    std::cin >> val;
+//
+//    std::cout << std::endl;
+//
+//    std::cout << "Enter a long value :";
+//
+//    uint64_t  val2;
+//    std::cin >> val2;
+//
+//    std::bitset<32> x(val);
+//    std::bitset<64> x2(val2);
+//
+//    std::cout << "Input value1: " << val << " : " << x << std::endl;
+//    std::cout << "Input value2: " << val2 << " : " << x2 << std::endl;
+//
+//    std::cout << "bit packed value 1 :" << std::endl;
+//
+//    uint8_t* buf1;
+//    size_t outsize = encodeVarint<uint32_t>(val, buf1);
+//    std::cout << "output size of packed value1 :" << outsize << std::endl;
+//    std::cout << decodeVarint(buf1, outsize) << endl;
+//
+//    std::cout << "bit packed value 2 :" << std::endl;
+//
+//    uint8_t* buf2;
+//    size_t outsize2 = encodeVarint<uint64_t>(val2, buf2);
+//    std::cout << "output size of packed value2 :" << outsize2 << std::endl;
+//    std::cout << decodeVarint(buf2, outsize2) << endl;
 
 
+
+    std::cout << "\n\nSTARTING VARIADIC TEST-------------------------------" << std::endl;
+
+
+    Formatter *formatter = new Formatter();
+
+    formatter->add(QString("This"),QString("That"), QString("and"), QString("All"), QString("of It"));
+    formatter->print();
+
+
+    delete formatter;
 
     std::cout << "____END OF LINE____\n\n";
 
