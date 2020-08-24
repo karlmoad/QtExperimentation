@@ -51,34 +51,40 @@ QJsonObject Person::toJSON() const {
 }
 
 Person::Builder::Builder() {
-    this->instance = new Person();
+    this->_instance = new Person();
 }
 
-Person::Builder::Builder(const Person &person) {
-    this->instance = new Person(person);
+Person::Builder::Builder(const Person &person)
+{
+    this->_instance = new Person(person);
 }
 
-Person::Builder::Builder(const QJsonObject &json) {
-    this->instance = new Person(json);
+Person::Builder::Builder(const QJsonObject &json)
+{
+    this->_instance = new Person(json);
 }
 
-Person::Builder *Person::Builder::setName(QString name) {
-    this->instance->m_Name = name;
-    return this;
+Person::Builder &Person::Builder::setName(QString name) {
+    this->_instance->m_Name = name;
+    return *this;
 }
 
-Person::Builder *Person::Builder::setHeightInInches(int inches) {
-    this->instance->m_height_inches = inches;
-    return this;
+Person::Builder &Person::Builder::setHeightInInches(int inches) {
+    this->_instance->m_height_inches = inches;
+    return *this;
 }
 
-Person::Builder *Person::Builder::setGender(Gender gender) {
-    this->instance->m_Sex = gender;
-    return this;
+Person::Builder &Person::Builder::setGender(Gender gender) {
+    this->_instance->m_Sex = gender;
+    return *this;
 }
 
 Person *Person::Builder::build() {
-    return this->instance;
+    return this->_instance;
 }
+
+
+
+
 
 

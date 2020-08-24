@@ -18,11 +18,11 @@ private: //Member variables
     Gender m_Sex = Gender::FEMALE;  //All humans begin as female
 
     explicit Person(const QJsonObject &json);
+    Person();
+    Person(const Person &toCopy);
 
 public:   //constructors
-    Person();
     ~Person();
-    Person(const Person &toCopy);
 
 public: //Member functions
 
@@ -34,15 +34,16 @@ public: //Member functions
 
     class Builder{
     private:
-        Person *instance;
+        Person *_instance;
+
 
     public:
         Builder();
-        explicit Builder(const Person &person);
-        explicit Builder(const QJsonObject &json);
-        Builder* setName(QString name);
-        Builder* setHeightInInches(int inches);
-        Builder* setGender(Gender gender);
+        Builder(const Person &person);
+        Builder(const QJsonObject &json);
+        Builder& setName(QString name);
+        Builder& setHeightInInches(int inches);
+        Builder& setGender(Gender gender);
         Person* build();
     };
 };
