@@ -22,6 +22,7 @@
 #include <QList>
 #include <bitset>
 #include "classes/Formatter.h"
+#include "classes/ChangeAction.h"
 
 
 template<typename int_t = uint64_t>
@@ -91,6 +92,9 @@ int main() {
     Person *p2 = Person::Builder(*p1).setName("Jane Does").setGender(Gender::FEMALE).build();
     Person *p3 = Person::Builder().setName("Jim Doe").setHeightInInches(60).setGender(Gender::MALE).build();
 
+    ChangeAction<Person*> c1(ChangeType::CREATE, p1);
+    ChangeAction<Person*> c2(ChangeType::CREATE, p2);
+    ChangeAction<Person*> c3(ChangeType::CREATE, p3);
 
     std::cout << "Person 3: Key: " << p3->getKey().toStdString()
               << " Name: " << p3->getName().toStdString()
@@ -112,6 +116,11 @@ int main() {
               << " CM:" << p1->getHeightinCentimeters()
               << " SEX: " << (p1->getGender() == Gender::FEMALE ? "Female" : "Male")
               << std::endl;
+
+
+    std::cout << "change action 1:" << static_cast<Person*>(c1.value())->getKey().toStdString() << std::endl;
+    std::cout << "change action 2:" << static_cast<Person*>(c2.value())->getKey().toStdString() << std::endl;
+    std::cout << "change action 3:" << static_cast<Person*>(c3.value())->getKey().toStdString() << std::endl;
 
     delete p1;
     delete p2;
@@ -396,11 +405,6 @@ int main() {
     delete formatter;
 
     std::cout << "____END OF LINE____\n\n";
-
-
-
-
-
 
 
     return 0;
